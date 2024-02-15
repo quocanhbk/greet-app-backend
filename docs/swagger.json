@@ -1,0 +1,925 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/protected": {
+      "get": {
+        "operationId": "AppController_getProtected",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/stream/token/{userId}": {
+      "get": {
+        "operationId": "StreamController_createToken",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "stream"
+        ]
+      }
+    },
+    "/api/stream/user": {
+      "post": {
+        "operationId": "StreamController_upsertUser",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "stream"
+        ]
+      }
+    },
+    "/api/stream/users": {
+      "get": {
+        "operationId": "StreamController_getUsers",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "stream"
+        ]
+      }
+    },
+    "/api/stream/channels": {
+      "get": {
+        "operationId": "StreamController_getChannels",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "stream"
+        ]
+      }
+    },
+    "/api/stream/channel/{channelId}": {
+      "get": {
+        "operationId": "StreamController_getCurrentChannel",
+        "parameters": [
+          {
+            "name": "channelId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "stream"
+        ]
+      }
+    },
+    "/api/stream/channel/{channelId}/members": {
+      "get": {
+        "operationId": "StreamController_getChannelMembers",
+        "parameters": [
+          {
+            "name": "channelId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "stream"
+        ]
+      },
+      "post": {
+        "operationId": "StreamController_addMember",
+        "parameters": [
+          {
+            "name": "channelId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddMemberDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "stream"
+        ]
+      }
+    },
+    "/api/stream/channel/{channelId}/messages": {
+      "post": {
+        "operationId": "StreamController_sendMessageAs",
+        "parameters": [
+          {
+            "name": "channelId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendMessageAs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "stream"
+        ]
+      },
+      "get": {
+        "operationId": "StreamController_getMessages",
+        "parameters": [
+          {
+            "name": "channelId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "stream"
+        ]
+      }
+    },
+    "/api/langs": {
+      "get": {
+        "operationId": "LangsController_getLangs",
+        "parameters": [
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetLanguagesResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "langs"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/langs/{id}": {
+      "get": {
+        "operationId": "LangsController_getLangById",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LanguageItem"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "langs"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/users": {
+      "get": {
+        "operationId": "UsersController_getUserInfo",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Get user information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "UsersController_updateGeneralInfo",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserInfoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update user information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/onboard": {
+      "post": {
+        "operationId": "UsersController_onboardUser",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OnboardUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Onboard new user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/topics": {
+      "post": {
+        "operationId": "UsersController_addUserTopics",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertTopicsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update user's topics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "UsersController_deleteUserTopics",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertTopicsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Delete user's topics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/languages": {
+      "post": {
+        "operationId": "UsersController_upsertUserLanguages",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertUserLanguageDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Upsert user's languages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "UsersController_deleteUserLanguages",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteUserLanguagesDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Delete user's languages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Greet App API",
+    "description": "Powered by Greet",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http",
+        "description": "Firebase Token"
+      }
+    },
+    "schemas": {
+      "UpsertUserDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId",
+          "name",
+          "role"
+        ]
+      },
+      "AddMemberDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId"
+        ]
+      },
+      "SendMessageAs": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId",
+          "message"
+        ]
+      },
+      "LanguageItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "GetLanguagesResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageItem"
+            }
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "data",
+          "total"
+        ]
+      },
+      "UserGender": {
+        "type": "string",
+        "enum": [
+          "Male",
+          "Female",
+          "Unknown"
+        ]
+      },
+      "UserLanguageType": {
+        "type": "string",
+        "enum": [
+          "Fluent",
+          "Learning"
+        ]
+      },
+      "UserLanguageDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "proficiency": {
+            "type": "number"
+          },
+          "type": {
+            "$ref": "#/components/schemas/UserLanguageType"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "proficiency",
+          "type"
+        ]
+      },
+      "UserPreferenceDto": {
+        "type": "object",
+        "properties": {
+          "partnerDescription": {
+            "type": "string"
+          },
+          "locationRange": {
+            "type": "number"
+          },
+          "ageRangeMin": {
+            "type": "number"
+          },
+          "ageRangeMax": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "partnerDescription",
+          "locationRange",
+          "ageRangeMin",
+          "ageRangeMax"
+        ]
+      },
+      "UserTopicDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "GetUserResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "introduction": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string"
+          },
+          "gender": {
+            "$ref": "#/components/schemas/UserGender"
+          },
+          "languages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserLanguageDto"
+            }
+          },
+          "preference": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserPreferenceDto"
+              }
+            ]
+          },
+          "topics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserTopicDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email",
+          "photo",
+          "phoneNumber",
+          "introduction",
+          "dateOfBirth",
+          "gender",
+          "languages",
+          "preference",
+          "topics"
+        ]
+      },
+      "UpdateUserInfoDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string"
+          },
+          "introduction": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string"
+          },
+          "gender": {
+            "$ref": "#/components/schemas/UserGender"
+          }
+        },
+        "required": [
+          "name",
+          "photo",
+          "introduction",
+          "dateOfBirth",
+          "gender"
+        ]
+      },
+      "OnboardUserLanguageDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "proficiency": {
+            "type": "number"
+          },
+          "type": {
+            "$ref": "#/components/schemas/UserLanguageType"
+          }
+        },
+        "required": [
+          "id",
+          "proficiency",
+          "type"
+        ]
+      },
+      "OnboardUserTopicDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "OnboardUserDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string"
+          },
+          "introduction": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string"
+          },
+          "gender": {
+            "$ref": "#/components/schemas/UserGender"
+          },
+          "languages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OnboardUserLanguageDto"
+            }
+          },
+          "preference": {
+            "$ref": "#/components/schemas/UserPreferenceDto"
+          },
+          "topics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OnboardUserTopicDto"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "photo",
+          "introduction",
+          "dateOfBirth",
+          "gender",
+          "languages",
+          "preference",
+          "topics"
+        ]
+      },
+      "UpsertTopicsDto": {
+        "type": "object",
+        "properties": {
+          "topicIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "topicIds"
+        ]
+      },
+      "UpsertUserLanguageDto": {
+        "type": "object",
+        "properties": {
+          "languageId": {
+            "type": "string"
+          },
+          "proficiency": {
+            "type": "number"
+          },
+          "type": {
+            "$ref": "#/components/schemas/UserLanguageType"
+          }
+        },
+        "required": [
+          "languageId",
+          "proficiency",
+          "type"
+        ]
+      },
+      "DeleteUserLanguagesDto": {
+        "type": "object",
+        "properties": {
+          "languageIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "languageIds"
+        ]
+      }
+    }
+  }
+}
