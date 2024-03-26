@@ -692,5 +692,47 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         query: query,
         ...params,
       }),
+
+    /**
+     * No description
+     *
+     * @tags friend-requests
+     * @name FriendRequestsControllerSendFriendRequest
+     * @request POST:/api/friend-requests/send
+     */
+    friendRequestsControllerSendFriendRequest: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/friend-requests/send`,
+        method: "POST",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags friend-requests
+     * @name FriendRequestsControllerListFriendRequests
+     * @request GET:/api/friend-requests/list
+     */
+    friendRequestsControllerListFriendRequests: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/friend-requests/list`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags friend-requests
+     * @name FriendRequestsControllerDecideFriendRequest
+     * @request PUT:/api/friend-requests/decide/{id}
+     */
+    friendRequestsControllerDecideFriendRequest: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/friend-requests/decide/${id}`,
+        method: "PUT",
+        ...params,
+      }),
   };
 }
