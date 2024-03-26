@@ -1,4 +1,6 @@
 import { Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryColumn, UpdateDateColumn } from "typeorm"
+import { FriendRequest } from "./friend-request.entity"
+import { Friendship } from "./friendship.entity"
 import { UserLanguage } from "./user-language.entity"
 import { UserPreference } from "./user-preference.entity"
 import { UserTopic } from "./user-topic.entity"
@@ -35,18 +37,36 @@ export class User {
   @Column({ nullable: true })
   gender: UserGender
 
-  @OneToMany(() => UserLanguage, (userLanguage) => userLanguage.user)
-  userLanguages: UserLanguage[] | null
+  @Column({ default: 0 })
+  exp: number
 
-  @OneToOne(() => UserPreference, (userPreference) => userPreference.user)
-  preference: UserPreference
-
-  @OneToMany(() => UserTopic, (userTopic) => userTopic.user)
-  userTopics: UserTopic[] | null
+  @Column({ default: 1 })
+  level: number
 
   @CreateDateColumn({ type: "timestamptz" })
   createdAt: string
 
   @UpdateDateColumn({ type: "timestamptz" })
   updatedAt: string
+
+  @OneToMany(() => UserLanguage, userLanguage => userLanguage.user)
+  userLanguages: UserLanguage[] | null
+
+  @OneToOne(() => UserPreference, userPreference => userPreference.user)
+  preference: UserPreference
+
+  @OneToMany(() => UserTopic, userTopic => userTopic.user)
+  userTopics: UserTopic[] | null
+
+  @OneToMany(() => FriendRequest, friendRequest => friendRequest.requester)
+  sentFriendRequests: FriendRequest[] | null
+
+  @OneToMany(() => FriendRequest, friendRequest => friendRequest.requestee)
+  receivedFriendRequests: FriendRequest[] | null
+
+  @OneToMany(() => Friendship, friendship => friendship.user1)
+  friendships1: Friendship[] | null
+
+  @OneToMany(() => Friendship, friendship => friendship.user2)
+  friendships2: Friendship[] | null
 }
