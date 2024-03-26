@@ -1,26 +1,25 @@
+import { User } from "@/database/entities"
 import { Inject, Injectable } from "@nestjs/common"
 import { StreamChat } from "stream-chat"
+import { GetChannelsResponse, StreamUser, SyncStreamTokenResponse } from "./stream.dto"
 
 @Injectable()
 export class StreamService {
-  constructor(@Inject("STREAM_CHAT") private readonly streamChat: StreamChat) {
-    this.streamChat.channel("messaging", "channel1", { name: "Channel 1", created_by_id: "greetteam" }).create()
-  }
+  constructor(@Inject("STREAM_CHAT") private readonly streamChat: StreamChat) {}
 
-  async createToken(userId: string): Promise<string> {
-    const token = this.streamChat.createToken(userId)
-    return token
-  }
+  async registerToken(user: User): Promise<SyncStreamTokenResponse> {
+    const token = this.streamChat.createToken(user.id)
+    const result = await this.streamChat.upsertUser({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: "user",
+    })
 
-  async upsertUser(userId: string, name: string, role: string): Promise<void> {
-    const user = { id: userId, name, role }
-    await this.streamChat.upsertUsers([
-      {
-        id: user.id,
-        role: user.role,
-        name: user.name,
-      },
-    ])
+    return {
+      token,
+      user: Object.values(result.users)[0] as unknown as StreamUser,
+    }
   }
 
   async getUsers(): Promise<any> {
@@ -28,9 +27,38 @@ export class StreamService {
     return users
   }
 
-  async getChannels(): Promise<any> {
-    const channels = await this.streamChat.queryChannels({ type: "messaging" })
-    return channels
+  // create channel
+  async createChannel(userId: string, id: string, name: string) {
+    const streamUser = await this.streamChat
+      .queryUsers({ id: userId })
+      .then(res => res.users.find(user => user.id === userId))
+
+    if (!streamUser) {
+      throw new Error("User not found")
+    }
+
+    const channel = this.streamChat.channel("messaging", id, { name, created_by_id: streamUser.id }).create()
+    return channel
+  }
+
+  async getChannels(userId: string): Promise<GetChannelsResponse> {
+    const channels = await this.streamChat.queryChannels(
+      { type: "messaging", created_by_id: userId },
+      { last_message_at: -1 },
+      {
+        limit: 20,
+        offset: 0,
+      }
+    )
+    return {
+      channels: channels.map(channel => ({
+        id: channel.data.id as string,
+        type: channel.data.type as string,
+        cid: channel.data.cid as string,
+        memberCount: (channel.data.member_count as number) ?? 0,
+        name: channel.data.name,
+      })),
+    }
   }
 
   async getCurrentChannel(channelId: string): Promise<any> {

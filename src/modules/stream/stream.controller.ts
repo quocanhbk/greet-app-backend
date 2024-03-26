@@ -1,23 +1,21 @@
+import { User } from "@/database/entities"
 import { GetAPI, PostAPI } from "@/utils/custom.decorators"
 import { Body, Controller, Param } from "@nestjs/common"
-import { ApiTags } from "@nestjs/swagger"
-import { AddMemberDto, SendMessageAs, UpsertUserDto } from "./stream.dto"
+import { ApiBearerAuth, ApiBody, ApiTags } from "@nestjs/swagger"
+import { FirebaseUser, UseFirebaseGuard } from "../auth/auth.guard"
+import { AddMemberDto, GetChannelsResponse, SendMessageAs, SyncStreamTokenResponse } from "./stream.dto"
 import { StreamService } from "./stream.service"
-
 @Controller("/stream")
 @ApiTags("stream")
+@ApiBearerAuth()
+@UseFirebaseGuard()
 export class StreamController {
   constructor(private readonly streamService: StreamService) {}
 
-  @GetAPI("/token/:userId")
-  async createToken(@Param("userId") userId: string): Promise<string> {
-    const token = await this.streamService.createToken(userId)
+  @GetAPI("/sync-token", { type: SyncStreamTokenResponse })
+  async syncToken(@FirebaseUser() user: User): Promise<SyncStreamTokenResponse> {
+    const token = await this.streamService.registerToken(user)
     return token
-  }
-
-  @PostAPI("/user")
-  async upsertUser(@Body() body: UpsertUserDto): Promise<void> {
-    await this.streamService.upsertUser(body.userId, body.name, body.role)
   }
 
   @GetAPI("/users")
@@ -26,10 +24,25 @@ export class StreamController {
     return users
   }
 
-  @GetAPI("/channels")
-  async getChannels(): Promise<any> {
-    const channels = await this.streamService.getChannels()
+  @GetAPI("/channels", { type: GetChannelsResponse })
+  async getChannels(@FirebaseUser() user: User): Promise<GetChannelsResponse> {
+    const channels = await this.streamService.getChannels(user.id)
     return channels
+  }
+
+  @PostAPI("/channel")
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        name: { type: "string" },
+      },
+    },
+  })
+  async createChannel(@FirebaseUser() user: User, @Body() body: { id: string; name: string }): Promise<any> {
+    const channel = await this.streamService.createChannel(user.id, body.id, body.name)
+    return channel
   }
 
   @GetAPI("/channel/:channelId")

@@ -35,13 +35,13 @@ export class User {
   @Column({ nullable: true })
   gender: UserGender
 
-  @OneToMany(() => UserLanguage, userLanguage => userLanguage.user)
+  @OneToMany(() => UserLanguage, (userLanguage) => userLanguage.user)
   userLanguages: UserLanguage[] | null
 
-  @OneToOne(() => UserPreference, userPreference => userPreference.user)
+  @OneToOne(() => UserPreference, (userPreference) => userPreference.user)
   preference: UserPreference
 
-  @OneToMany(() => UserTopic, userTopic => userTopic.user)
+  @OneToMany(() => UserTopic, (userTopic) => userTopic.user)
   userTopics: UserTopic[] | null
 
   @CreateDateColumn({ type: "timestamptz" })

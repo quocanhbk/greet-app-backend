@@ -23,50 +23,29 @@
         }
       }
     },
-    "/api/stream/token/{userId}": {
+    "/api/stream/sync-token": {
       "get": {
-        "operationId": "StreamController_createToken",
-        "parameters": [
-          {
-            "name": "userId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "operationId": "StreamController_syncToken",
+        "parameters": [],
         "responses": {
           "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "stream"
-        ]
-      }
-    },
-    "/api/stream/user": {
-      "post": {
-        "operationId": "StreamController_upsertUser",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpsertUserDto"
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncStreamTokenResponse"
+                }
               }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
         "tags": [
           "stream"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ]
       }
     },
@@ -81,6 +60,11 @@
         },
         "tags": [
           "stream"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ]
       }
     },
@@ -90,11 +74,60 @@
         "parameters": [],
         "responses": {
           "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetChannelsResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "stream"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/stream/channel": {
+      "post": {
+        "operationId": "StreamController_createChannel",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
             "description": ""
           }
         },
         "tags": [
           "stream"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ]
       }
     },
@@ -118,6 +151,11 @@
         },
         "tags": [
           "stream"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ]
       }
     },
@@ -141,6 +179,11 @@
         },
         "tags": [
           "stream"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ]
       },
       "post": {
@@ -172,6 +215,11 @@
         },
         "tags": [
           "stream"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ]
       }
     },
@@ -205,6 +253,11 @@
         },
         "tags": [
           "stream"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ]
       },
       "get": {
@@ -226,6 +279,11 @@
         },
         "tags": [
           "stream"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ]
       }
     },
@@ -535,6 +593,83 @@
           }
         ]
       }
+    },
+    "/api/users/preferences": {
+      "post": {
+        "operationId": "UsersController_updateUserPreference",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserPreferenceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update user's preferences",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/recommendations/{userId}": {
+      "get": {
+        "operationId": "RecommendationsController_getRecommendations",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "skip",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "take",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": 10,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "recommendations"
+        ]
+      }
     }
   },
   "info": {
@@ -555,23 +690,99 @@
       }
     },
     "schemas": {
-      "UpsertUserDto": {
+      "StreamUser": {
         "type": "object",
         "properties": {
-          "userId": {
-            "type": "string"
-          },
-          "name": {
+          "id": {
             "type": "string"
           },
           "role": {
             "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "banned": {
+            "type": "boolean"
+          },
+          "online": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
           }
         },
         "required": [
-          "userId",
+          "id",
+          "role",
+          "created_at",
+          "updated_at",
+          "banned",
+          "online",
           "name",
-          "role"
+          "email"
+        ]
+      },
+      "SyncStreamTokenResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/StreamUser"
+          }
+        },
+        "required": [
+          "token",
+          "user"
+        ]
+      },
+      "StreamChannelItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "cid": {
+            "type": "string"
+          },
+          "memberCount": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "cid",
+          "memberCount",
+          "name"
+        ]
+      },
+      "GetChannelsResponse": {
+        "type": "object",
+        "properties": {
+          "channels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StreamChannelItem"
+            }
+          }
+        },
+        "required": [
+          "channels"
         ]
       },
       "AddMemberDto": {
@@ -918,6 +1129,29 @@
         },
         "required": [
           "languageIds"
+        ]
+      },
+      "UpdateUserPreferenceDto": {
+        "type": "object",
+        "properties": {
+          "partnerDescription": {
+            "type": "string"
+          },
+          "locationRange": {
+            "type": "number"
+          },
+          "ageRangeMin": {
+            "type": "number"
+          },
+          "ageRangeMax": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "partnerDescription",
+          "locationRange",
+          "ageRangeMin",
+          "ageRangeMax"
         ]
       }
     }

@@ -1,25 +1,21 @@
-import { DeleteAPI, GetAPI, PostAPI, PutAPI } from "@/utils/custom.decorators";
-import { Body, Controller } from "@nestjs/common";
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import {
-  FirebaseUser,
-  IFirebaseUser,
-  UseFirebaseGuard,
-} from "../auth/auth.guard";
+import { DeleteAPI, GetAPI, PostAPI, PutAPI } from "@/utils/custom.decorators"
+import { Body, Controller } from "@nestjs/common"
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger"
+import { FirebaseUser, IFirebaseUser, UseFirebaseGuard } from "../auth/auth.guard"
 import {
   DeleteUserLanguagesDto,
   UpdateUserInfoDto,
   UpdateUserPreferenceDto,
   UpsertTopicsDto,
   UpsertUserLanguageDto,
-} from "./user-preferences.dto";
-import { UserPreferencesService } from "./user-preferences.service";
-import { GetUserResponseDto, OnboardUserDto } from "./users.dto";
-import { UsersService } from "./users.service";
+} from "./user-preferences.dto"
+import { UserPreferencesService } from "./user-preferences.service"
+import { GetUserResponseDto, OnboardUserDto } from "./users.dto"
+import { UsersService } from "./users.service"
 
 @ApiTags("users")
-@UseFirebaseGuard()
 @ApiBearerAuth()
+@UseFirebaseGuard()
 @Controller("users")
 export class UsersController {
   constructor(
@@ -31,42 +27,28 @@ export class UsersController {
     type: GetUserResponseDto,
     description: "Get user information",
   })
-  public async getUserInfo(
-    @FirebaseUser() user: IFirebaseUser
-  ): Promise<GetUserResponseDto> {
-    return this.usersService.getUserInfo(user.id);
+  public async getUserInfo(@FirebaseUser() user: IFirebaseUser): Promise<GetUserResponseDto> {
+    return this.usersService.getUserInfo(user.id)
   }
 
   @PutAPI("/", { type: Boolean, description: "Update user information" })
-  public async updateGeneralInfo(
-    @FirebaseUser() user: IFirebaseUser,
-    @Body() body: UpdateUserInfoDto
-  ) {
-    return this.userPreferencesService.updateGeneralInfo(user.id, body);
+  public async updateGeneralInfo(@FirebaseUser() user: IFirebaseUser, @Body() body: UpdateUserInfoDto) {
+    return this.userPreferencesService.updateGeneralInfo(user.id, body)
   }
 
   @PostAPI("/onboard", { type: Boolean, description: "Onboard new user" })
-  public async onboardUser(
-    @FirebaseUser() user: IFirebaseUser,
-    @Body() body: OnboardUserDto
-  ): Promise<boolean> {
-    return this.usersService.onboardUser(user.id, body);
+  public async onboardUser(@FirebaseUser() user: IFirebaseUser, @Body() body: OnboardUserDto): Promise<boolean> {
+    return this.usersService.onboardUser(user.id, body)
   }
 
   @PostAPI("/topics", { type: Boolean, description: "Update user's topics" })
-  public async addUserTopics(
-    @FirebaseUser() user: IFirebaseUser,
-    @Body() body: UpsertTopicsDto
-  ): Promise<boolean> {
-    return this.userPreferencesService.addUserTopics(user.id, body.topicIds);
+  public async addUserTopics(@FirebaseUser() user: IFirebaseUser, @Body() body: UpsertTopicsDto): Promise<boolean> {
+    return this.userPreferencesService.addUserTopics(user.id, body.topicIds)
   }
 
   @DeleteAPI("/topics", { type: Boolean, description: "Delete user's topics" })
-  public async deleteUserTopics(
-    @FirebaseUser() user: IFirebaseUser,
-    @Body() body: UpsertTopicsDto
-  ): Promise<boolean> {
-    return this.userPreferencesService.deleteUserTopics(user.id, body.topicIds);
+  public async deleteUserTopics(@FirebaseUser() user: IFirebaseUser, @Body() body: UpsertTopicsDto): Promise<boolean> {
+    return this.userPreferencesService.deleteUserTopics(user.id, body.topicIds)
   }
 
   @PostAPI("/languages", {
@@ -77,7 +59,7 @@ export class UsersController {
     @FirebaseUser() user: IFirebaseUser,
     @Body() body: UpsertUserLanguageDto
   ): Promise<boolean> {
-    return this.userPreferencesService.upsertUserLanguages(user.id, body);
+    return this.userPreferencesService.upsertUserLanguages(user.id, body)
   }
 
   @DeleteAPI("/languages", {
@@ -88,10 +70,7 @@ export class UsersController {
     @FirebaseUser() user: IFirebaseUser,
     @Body() body: DeleteUserLanguagesDto
   ): Promise<boolean> {
-    return this.userPreferencesService.deleteUserLanguages(
-      user.id,
-      body.languageIds
-    );
+    return this.userPreferencesService.deleteUserLanguages(user.id, body.languageIds)
   }
 
   @PostAPI("/preferences", {
@@ -102,6 +81,6 @@ export class UsersController {
     @FirebaseUser() user: IFirebaseUser,
     @Body() body: UpdateUserPreferenceDto
   ): Promise<boolean> {
-    return this.userPreferencesService.updateUserPreference(user.id, body);
+    return this.userPreferencesService.updateUserPreference(user.id, body)
   }
 }

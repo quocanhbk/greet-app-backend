@@ -2,8 +2,9 @@ import { INestApplication, VersioningType } from "@nestjs/common"
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger"
 import { existsSync, mkdirSync, writeFileSync } from "fs"
 import { resolve } from "path"
+import { generateApi } from "swagger-typescript-api"
 
-export const setupSwagger = (app: INestApplication, nodeEnv: string) => {
+export const setupSwagger = async (app: INestApplication, nodeEnv: string) => {
   const options = new DocumentBuilder()
     .setTitle("Greet App API")
     .setDescription(`Powered by Greet`)
@@ -33,12 +34,29 @@ export const setupSwagger = (app: INestApplication, nodeEnv: string) => {
 
   // generate typescript api
   if (nodeEnv === "local") {
-    const docPath = resolve(__dirname, "../../../app/lib/swaggers/")
+    const docPath = resolve(__dirname, "../../swagger/")
 
     if (!existsSync(docPath)) {
       mkdirSync(docPath, { recursive: true })
     }
 
     writeFileSync(resolve(docPath, "swagger.json"), JSON.stringify(document, null, 2))
+
+    await generateApi({
+      name: "sdk",
+      output: resolve(__dirname, "../../swagger/"),
+      spec: document as any,
+      prettier: {
+        singleQuote: false,
+        jsxSingleQuote: false,
+        arrowParens: "avoid",
+        trailingComma: "all",
+        tabWidth: 2,
+        printWidth: 120,
+        parser: "typescript",
+      },
+      httpClientType: "axios",
+      unwrapResponseData: true,
+    })
   }
 }
