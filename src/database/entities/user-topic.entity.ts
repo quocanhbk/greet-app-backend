@@ -11,12 +11,12 @@ export class UserTopic {
   @Column()
   topicId: string
 
-  @ManyToOne(() => Topic, topic => topic.userTopics)
+  @ManyToOne(() => Topic, topic => topic.userTopics, { onDelete: "CASCADE" })
   topic: Topic
 
   @Column()
   userId: string
 
-  @ManyToOne(() => User, user => user.userTopics)
+  @ManyToOne(() => User, user => user.userTopics, { onDelete: "CASCADE" })
   user: User
 }

@@ -1,6 +1,12 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 import { User } from "./user.entity"
 
+export enum FriendRequestStatus {
+  PENDING = "pending",
+  ACCEPTED = "accepted",
+  DECLINED = "declined",
+}
+
 @Entity()
 export class FriendRequest {
   @PrimaryGeneratedColumn()
@@ -19,7 +25,7 @@ export class FriendRequest {
   requestee: User
 
   @Column({ default: "pending" })
-  status: string
+  status: FriendRequestStatus
 
   @CreateDateColumn({ type: "timestamptz" })
   createdAt: string

@@ -482,14 +482,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags langs
      * @name LangsControllerGetLangs
      * @request GET:/api/langs
-     * @secure
      */
     langsControllerGetLangs: (
-      query?: {
+      query: {
         /** @default 0 */
         skip?: number;
         /** @default 10 */
         take?: number;
+        search: string;
       },
       params: RequestParams = {},
     ) =>
@@ -497,7 +497,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/langs`,
         method: "GET",
         query: query,
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -508,13 +507,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags langs
      * @name LangsControllerGetLangById
      * @request GET:/api/langs/{id}
-     * @secure
      */
     langsControllerGetLangById: (id: string, params: RequestParams = {}) =>
       this.request<LanguageItem, any>({
         path: `/api/langs/${id}`,
         method: "GET",
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -690,48 +687,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/recommendations/${userId}`,
         method: "GET",
         query: query,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags friend-requests
-     * @name FriendRequestsControllerSendFriendRequest
-     * @request POST:/api/friend-requests/send
-     */
-    friendRequestsControllerSendFriendRequest: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/friend-requests/send`,
-        method: "POST",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags friend-requests
-     * @name FriendRequestsControllerListFriendRequests
-     * @request GET:/api/friend-requests/list
-     */
-    friendRequestsControllerListFriendRequests: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/friend-requests/list`,
-        method: "GET",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags friend-requests
-     * @name FriendRequestsControllerDecideFriendRequest
-     * @request PUT:/api/friend-requests/decide/{id}
-     */
-    friendRequestsControllerDecideFriendRequest: (id: string, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/friend-requests/decide/${id}`,
-        method: "PUT",
         ...params,
       }),
   };

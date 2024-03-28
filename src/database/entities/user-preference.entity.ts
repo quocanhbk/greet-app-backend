@@ -6,7 +6,7 @@ export class UserPreference {
   @PrimaryColumn()
   userId: string
 
-  @OneToOne(() => User, user => user.preference)
+  @OneToOne(() => User, user => user.preference, { onDelete: "CASCADE" })
   @JoinColumn()
   user: User
 

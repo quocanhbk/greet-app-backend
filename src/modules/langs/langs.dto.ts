@@ -1,7 +1,10 @@
 import { PaginationDto } from "@/dtos/pagination.dto"
 import { ApiProperty } from "@nestjs/swagger"
 
-export class GetLanguagesDto extends PaginationDto {}
+export class GetLanguagesDto extends PaginationDto {
+  @ApiProperty()
+  search: string
+}
 
 export class LanguageItem {
   @ApiProperty()

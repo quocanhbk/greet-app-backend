@@ -2,21 +2,21 @@ import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Up
 import { User } from "./user.entity"
 
 @Entity()
-export class Friendship {
+export class Block {
   @PrimaryGeneratedColumn()
   id: number
 
   @Column()
-  user1Id: string
+  blockerId: string
 
-  @ManyToOne(() => User, user => user.friendships1, { onDelete: "CASCADE" })
-  user1: User
+  @ManyToOne(() => User, user => user.blockedUsers, { onDelete: "CASCADE" })
+  blocker: User
 
   @Column()
-  user2Id: string
+  blockedId: string
 
-  @ManyToOne(() => User, user => user.friendships2, { onDelete: "CASCADE" })
-  user2: User
+  @ManyToOne(() => User, user => user.blockedByUsers, { onDelete: "CASCADE" })
+  blocked: User
 
   @CreateDateColumn({ type: "timestamptz" })
   createdAt: string

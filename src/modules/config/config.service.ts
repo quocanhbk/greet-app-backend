@@ -37,4 +37,8 @@ export class ConfigService {
       entities: [path.join(__dirname, "../../database/entities/**/*.entity.{ts,js}")],
     }
   }
+
+  public get redis(): string {
+    return this.get(ConfigKey.REDIS_URL)
+  }
 }

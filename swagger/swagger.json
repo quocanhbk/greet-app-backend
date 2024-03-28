@@ -308,6 +308,14 @@
               "default": 10,
               "type": "number"
             }
+          },
+          {
+            "name": "search",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -324,11 +332,6 @@
         },
         "tags": [
           "langs"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
         ]
       }
     },
@@ -350,11 +353,6 @@
         },
         "tags": [
           "langs"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
         ]
       }
     },
@@ -668,48 +666,6 @@
         },
         "tags": [
           "recommendations"
-        ]
-      }
-    },
-    "/api/friend-requests/send": {
-      "post": {
-        "operationId": "FriendRequestsController_sendFriendRequest",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Send a friend request"
-          }
-        },
-        "tags": [
-          "friend-requests"
-        ]
-      }
-    },
-    "/api/friend-requests/list": {
-      "get": {
-        "operationId": "FriendRequestsController_listFriendRequests",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "List all friend requests"
-          }
-        },
-        "tags": [
-          "friend-requests"
-        ]
-      }
-    },
-    "/api/friend-requests/decide/{id}": {
-      "put": {
-        "operationId": "FriendRequestsController_decideFriendRequest",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Accept/decline a friend request"
-          }
-        },
-        "tags": [
-          "friend-requests"
         ]
       }
     }

@@ -16,13 +16,13 @@ export class UserLanguage {
   @Column()
   userId: string
 
-  @ManyToOne(() => User, user => user.userLanguages)
+  @ManyToOne(() => User, user => user.userLanguages, { onDelete: "CASCADE" })
   user: User
 
   @Column()
   languageId: string
 
-  @ManyToOne(() => Language, language => language.userLanguages)
+  @ManyToOne(() => Language, language => language.userLanguages, { onDelete: "CASCADE" })
   language: Language
 
   @Column()

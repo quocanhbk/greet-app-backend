@@ -1,15 +1,20 @@
+import { User } from "@/database/entities"
 import { GetAPI, PostAPI, PutAPI } from "@/utils/custom.decorators"
-import { Controller } from "@nestjs/common"
+import { Body, Controller } from "@nestjs/common"
 import { ApiTags } from "@nestjs/swagger"
-import { UseFirebaseGuard } from "../auth/auth.guard"
+import { FirebaseUser, UseFirebaseGuard } from "../auth/auth.guard"
+import { SendFriendRequestDto } from "./friend-requests.dto"
+import { FriendRequestsService } from "./friend-requests.service"
 
 @UseFirebaseGuard()
 @ApiTags("friend-requests")
 @Controller("friend-requests")
 export class FriendRequestsController {
-  @PostAPI("/send", { description: "Send a friend request" })
-  async sendFriendRequest() {
-    // Implementation
+  constructor(private friendRequestService: FriendRequestsService) {}
+
+  @PostAPI("/send", { description: "Send a friend request", type: Boolean })
+  async sendFriendRequest(@FirebaseUser() user: User, @Body() body: SendFriendRequestDto) {
+    return this.friendRequestService.sendFriendRequest(user.id, body)
   }
 
   @GetAPI("/list", { description: "List all friend requests" })

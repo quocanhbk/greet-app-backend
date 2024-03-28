@@ -23,3 +23,6 @@ lerna-debug.log*
 ormconfig.json
 
 .DS_Store
+
+# Docker data
+/docker/data

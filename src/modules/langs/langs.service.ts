@@ -9,10 +9,12 @@ export class LangsService {
   constructor(@InjectRepository(Language) private langRepo: Repository<Language>) {}
 
   async getLangs(query: GetLanguagesDto): Promise<GetLanguagesResponseDto> {
-    const result = await this.langRepo.findAndCount({
-      skip: query.skip,
-      take: query.take,
-    })
+    const result = await this.langRepo
+      .createQueryBuilder("lang")
+      .when(query.search, qb => qb.where("lang.name ILIKE :search", { search: `%${query.search}%` }))
+      .skip(query.skip || 0)
+      .take(query.take || 10)
+      .getManyAndCount()
 
     return {
       data: result[0],

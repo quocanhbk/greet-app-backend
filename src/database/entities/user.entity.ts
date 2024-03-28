@@ -1,4 +1,5 @@
 import { Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryColumn, UpdateDateColumn } from "typeorm"
+import { Block } from "./block.entity"
 import { FriendRequest } from "./friend-request.entity"
 import { Friendship } from "./friendship.entity"
 import { UserLanguage } from "./user-language.entity"
@@ -69,4 +70,10 @@ export class User {
 
   @OneToMany(() => Friendship, friendship => friendship.user2)
   friendships2: Friendship[] | null
+
+  @OneToMany(() => Block, block => block.blocker)
+  blockedUsers: User[] | null
+
+  @OneToMany(() => Block, block => block.blocked)
+  blockedByUsers: User[] | null
 }
